@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ludo Game</title>
+
+<style>
+body{
+  font-family:Arial;
+  background:#eee;
+  text-align:center;
+}
+
+/* BOARD */
+
+.outer{
+  height:600px;
+  width:600px;
+  margin:30px auto;
+  display:grid;
+  grid-template-columns:repeat(15,1fr);
+  grid-template-rows:repeat(15,1fr);
+  border:4px solid black;
+  position:relative;
+  background:white;
+}
+
+.cell{
+  border:1px solid #ccc;
+}
+
+/* HOME AREAS (FIXED) */
+
+.homeArea{
+  position:absolute;
+  width:240px;
+  height:240px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  grid-template-rows:repeat(2,1fr);
+  gap:25px;
+  padding:30px;
+  box-sizing:border-box;
+}
+
+.redHome{ background:red; top:0; left:0; }
+.greenHome{ background:#2ecc40; top:0; right:0; }
+.yellowHome{ background:#ffcc00; bottom:0; left:0; }
+.blueHome{ background:#0074D9; bottom:0; right:0; }
+
+.homeBox{
+  background:white;
+  border-radius:12px;
+  box-shadow:0 0 10px rgba(0,0,0,0.4);
+}
+
+/* CENTER TRIANGLE */
+
+.center{
+  position:absolute;
+  width:120px;
+  height:120px;
+  top:240px;
+  left:240px;
+  background:conic-gradient(
+    red 0deg 90deg,
+    blue 90deg 180deg,
+    yellow 180deg 270deg,
+    green 270deg 360deg
+  );
+  border:2px solid black;
+}
+
+/* TOKENS */
+
+.token{
+  height:22px;
+  width:22px;
+  border-radius:50%;
+  position:absolute;
+  border:2px solid white;
+  box-shadow:0 0 6px black;
+  transition:0.2s;
+}
+
+.redToken{ background:red; }
+.greenToken{ background:#2ecc40; }
+.yellowToken{ background:#ffcc00; }
+.blueToken{ background:#0074D9; }
+
+/* UI */
+
+.game-ui{
+  width:600px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.player{
+  padding:8px 15px;
+  border-radius:20px;
+  color:white;
+  font-weight:bold;
+  opacity:0.5;
+}
+
+.red{ background:red; }
+.green{ background:#2ecc40; }
+.yellow{ background:#ffcc00; color:black; }
+.blue{ background:#0074D9; }
+
+.activePlayer{
+  opacity:1;
+  box-shadow:0 0 10px black;
+}
+
+#diceDisplay{
+  font-size:40px;
+}
+
+button{
+  padding:8px 20px;
+  font-size:16px;
+  cursor:pointer;
+  border-radius:8px;
+  border:none;
+  background:black;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<h1>🎮 Ludo Game</h1>
+
+<div class="outer" id="board"></div>
+
+<div class="game-ui">
+  <div class="player red activePlayer" id="RedPanel">Red</div>
+  <div class="player green" id="GreenPanel">Green</div>
+  <div class="player yellow" id="YellowPanel">Yellow</div>
+  <div class="player blue" id="BluePanel">Blue</div>
+
+  <div>
+    <div id="diceDisplay">🎲</div>
+    <button onclick="rollDice()">ROLL</button>
+  </div>
+</div>
+
+<script>
+
+let board=document.getElementById("board");
+
+/* CREATE GRID */
+for(let i=0;i<225;i++){
+  let cell=document.createElement("div");
+  cell.className="cell";
+  board.appendChild(cell);
+}
+
+/* CREATE HOME AREAS */
+
+["red","green","yellow","blue"].forEach(color=>{
+  let home=document.createElement("div");
+  home.className="homeArea "+color+"Home";
+
+  for(let i=0;i<4;i++){
+    let box=document.createElement("div");
+    box.className="homeBox";
+    home.appendChild(box);
+  }
+
+  board.appendChild(home);
+});
+
+/* CENTER */
+let center=document.createElement("div");
+center.className="center";
+board.appendChild(center);
+
+/* SIMPLE PATH */
+let cells=document.querySelectorAll(".cell");
+let path=[];
+
+for(let i=6;i<15;i++) path.push(cells[i]);
+for(let i=29;i<225;i+=15) path.push(cells[i]);
+for(let i=218;i>=210;i--) path.push(cells[i]);
+for(let i=195;i>90;i-=15) path.push(cells[i]);
+
+/* PLAYERS */
+let players=[
+ {name:"Red",color:"redToken",position:-1},
+ {name:"Green",color:"greenToken",position:-1},
+ {name:"Yellow",color:"yellowToken",position:-1},
+ {name:"Blue",color:"blueToken",position:-1}
+];
+
+let currentPlayer=0;
+let moving=false;
+
+/* CREATE TOKENS */
+players.forEach(p=>{
+ let t=document.createElement("div");
+ t.className="token "+p.color;
+ t.id=p.name;
+ document.body.appendChild(t);
+});
+
+/* DICE */
+function rollDice(){
+
+ if(moving) return;
+
+ let dice=Math.floor(Math.random()*6)+1;
+ document.getElementById("diceDisplay").innerText="🎲 "+dice;
+
+ let player=players[currentPlayer];
+
+ if(player.position===-1){
+   if(dice===6){
+     player.position=0;
+     placeToken(player);
+   }else{
+     changeTurn();
+   }
+ }else{
+   animateMove(player,dice);
+ }
+
+ if(dice!==6){
+   setTimeout(changeTurn,800);
+ }
+}
+
+/* ANIMATION */
+function animateMove(player,steps){
+
+ moving=true;
+ let count=0;
+
+ let interval=setInterval(()=>{
+   if(count===steps){
+     clearInterval(interval);
+     moving=false;
+     return;
+   }
+
+   player.position++;
+   if(player.position>=path.length){
+     player.position=0;
+   }
+
+   placeToken(player);
+   count++;
+
+ },200);
+}
+
+/* PLACE TOKEN */
+function placeToken(player){
+
+ let token=document.getElementById(player.name);
+ let rect=path[player.position].getBoundingClientRect();
+
+ token.style.top=rect.top+window.scrollY+8+"px";
+ token.style.left=rect.left+window.scrollX+8+"px";
+}
+
+/* TURN */
+function changeTurn(){
+
+ document.getElementById(players[currentPlayer].name+"Panel")
+ .classList.remove("activePlayer");
+
+ currentPlayer=(currentPlayer+1)%players.length;
+
+ document.getElementById(players[currentPlayer].name+"Panel")
+ .classList.add("activePlayer");
+}
+
+</script>
+
+</body>
+</html>

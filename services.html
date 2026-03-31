@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Services | Sloni Raj</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:
+radial-gradient(circle at top left, rgba(109,40,217,0.12), transparent 28%),
+radial-gradient(circle at bottom right, rgba(236,72,153,0.10), transparent 28%),
+linear-gradient(135deg,#f8fbff,#eef2ff,#fdf4ff);
+color:#0f172a;
+overflow-x:hidden;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+.container{
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:280px;
+position:fixed;
+left:0;
+top:0;
+height:100vh;
+padding:35px 24px;
+background:rgba(255,255,255,0.72);
+backdrop-filter:blur(18px);
+border-right:1px solid rgba(255,255,255,0.4);
+box-shadow:8px 0 25px rgba(0,0,0,0.04);
+}
+
+.logo{
+font-size:34px;
+font-weight:800;
+margin-bottom:35px;
+}
+
+.logo span{
+background:linear-gradient(135deg,#6d28d9,#ec4899);
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+}
+
+.nav-links{
+list-style:none;
+display:flex;
+flex-direction:column;
+gap:16px;
+}
+
+.nav-links a{
+display:block;
+padding:14px 18px;
+border-radius:16px;
+font-size:18px;
+font-weight:600;
+transition:0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+background:linear-gradient(135deg,#6d28d9,#2563eb);
+color:white;
+transform:translateX(6px);
+}
+
+/* MAIN */
+
+.main-content{
+margin-left:280px;
+width:calc(100% - 280px);
+padding:60px;
+}
+
+/* TITLE */
+
+.section-title{
+font-size:48px;
+font-weight:800;
+margin-bottom:10px;
+}
+
+.section-subtitle{
+color:#475569;
+margin-bottom:50px;
+}
+
+/* SERVICES GRID */
+
+.services-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.service-card{
+background:white;
+border-radius:24px;
+padding:35px;
+box-shadow:0 15px 40px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.service-card:hover{
+transform:translateY(-10px);
+box-shadow:0 20px 45px rgba(109,40,217,0.15);
+}
+
+.service-icon{
+font-size:40px;
+margin-bottom:15px;
+}
+
+.service-title{
+font-size:22px;
+font-weight:700;
+margin-bottom:10px;
+}
+
+.service-text{
+font-size:15px;
+color:#475569;
+line-height:1.7;
+}
+
+/* RESPONSIVE */
+
+@media (max-width:1000px){
+
+.services-grid{
+grid-template-columns:1fr 1fr;
+}
+
+}
+
+@media (max-width:700px){
+
+.sidebar{
+display:none;
+}
+
+.main-content{
+margin-left:0;
+width:100%;
+padding:40px 20px;
+}
+
+.services-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<aside class="sidebar">
+
+<div class="logo">
+Sloni <span>Raj</span>
+</div>
+
+<ul class="nav-links">
+<li><a href="index.html">Home</a></li>
+<li><a href="intro.html">My Intro</a></li>
+<li><a href="services.html" class="active">Services</a></li>
+<li><a href="blog.html">Blog</a></li>
+<li><a href="contact.html">Contact Me</a></li>
+</ul>
+
+</aside>
+
+<!-- Main -->
+
+<main class="main-content">
+
+<h1 class="section-title">My Services</h1>
+<p class="section-subtitle">
+These are the areas where I can help you build modern and responsive web experiences.
+</p>
+
+<div class="services-grid">
+
+<div class="service-card">
+<div class="service-icon">💻</div>
+<div class="service-title">Frontend Development</div>
+<div class="service-text">
+I build responsive and attractive user interfaces using HTML, CSS and JavaScript with modern layout techniques.
+</div>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🎨</div>
+<div class="service-title">Website Design</div>
+<div class="service-text">
+I create visually appealing website designs that improve user experience and make websites look professional.
+</div>
+</div>
+
+<div class="service-card">
+<div class="service-icon">⚙️</div>
+<div class="service-title">Django Development</div>
+<div class="service-text">
+I develop dynamic web applications using Python and Django with database integration using MySQL.
+</div>
+</div>
+
+<div class="service-card">
+<div class="service-icon">📱</div>
+<div class="service-title">Responsive Websites</div>
+<div class="service-text">
+I ensure websites work smoothly on desktop, tablet and mobile devices using responsive design techniques.
+</div>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🛒</div>
+<div class="service-title">E-commerce Websites</div>
+<div class="service-text">
+I build e-commerce projects like product pages, shopping carts and checkout systems.
+</div>
+</div>
+
+<div class="service-card">
+<div class="service-icon">🚀</div>
+<div class="service-title">Website Optimization</div>
+<div class="service-text">
+I improve website structure, speed and layout for better performance and cleaner code.
+</div>
+</div>
+
+</div>
+
+</main>
+
+</div>
+
+</body>
+</html>
